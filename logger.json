@@ -1,0 +1,44 @@
+ 아래 코드 짧게 설명해줘
+
+import json
+import logging.config
+
+config = json.load(open('./logger.json'))
+logging.config.dictConfig(config)
+logger = logging.getLogger(f"project_name.{__name__}")
+
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "basic": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+      "datefmt": "%Y-%m-%d %H:%M:%S"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "DEBUG",
+      "formatter": "basic",
+      "stream": "ext://sys.stdout"
+    },
+    "file": {
+      "class": "logging.FileHandler",
+      "level": "DEBUG",
+      "formatter": "basic",
+      "filename": "./logs/debug.log"
+    }
+  },
+  "loggers": {
+    "my_project": {
+      "level": "DEBUG",
+      "handlers": ["console", "file"],
+      "propagate": false
+    }
+  },
+  "root": {
+    "level": "WARNING",
+    "handlers": ["console"]
+  }
+}
